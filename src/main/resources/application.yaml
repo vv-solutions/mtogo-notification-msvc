@@ -1,0 +1,38 @@
+quarkus:
+  smallrye-graphql-client:
+    customer-api:
+      url: ${MTOGO_CUSTOMER_SERVICE_URL}/graphql
+
+
+
+notification:
+  msvc:
+    contextName: notification-msvc
+
+    mq:
+      host: ${MTOGO_RABBITMQ_HOST}
+      username: ${MTOGO_RABBITMQ_USERNAME}
+      password: ${MTOGO_RABBITMQ_PASSWORD}
+      port: ${MTOGO_RABBITMQ_PORT}
+      vhost: ${MTOGO_RABBITMQ_VHOST}
+      useSsl: false
+      redeliveryBaseDelaySec: 15
+      redeliveryMultiplier: 2
+      redeliveryMaxDelaySec: 2000
+
+
+    routes:
+
+      notification:
+        in: rabbitmq:notification.dx?queue=notification.in.q&routingKey=notification&autoAck=false&autoDelete=false&skipExchangeDeclare=true&skipDlqDeclare=true&reQueue=true
+        routeId: handle-notification-route-id
+
+
+"%dev":
+  quarkus:
+    log:
+      level: INFO
+      console:
+        json: false
+    devservices:
+      enabled: false

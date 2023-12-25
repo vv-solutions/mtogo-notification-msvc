@@ -25,7 +25,7 @@
     <dependency>
       <groupId>dk.vv</groupId>
       <artifactId>common-data-transfer-objects</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.10</version>
     </dependency>
     <dependency>
       <groupId>dk.vv</groupId>
@@ -37,7 +37,14 @@
       <artifactId>camel-quarkus-rabbitmq</artifactId>
       <version>2.16.0</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mailer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-graphql-client</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.apache.camel.quarkus</groupId>
       <artifactId>camel-quarkus-core</artifactId>
