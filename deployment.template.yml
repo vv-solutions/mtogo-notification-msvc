@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: ${IMAGE_NAME}
+  name: ${IMAGE_NAME}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ${IMAGE_NAME}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ${IMAGE_NAME}
+    spec:
+      containers:
+        - name: ${IMAGE_NAME}
+          image: ${image_tag}
+          resources:
+            limits:
+              memory: 100Mi
+            requests:
+              memory: 100Mi
+          envFrom:
+            - configMapRef:
+                name: mtogo-service
+            - secretRef:
+                name: mtogo-rabbit
