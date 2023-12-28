@@ -3,6 +3,7 @@ package dk.vv.mtogo.notification.msvc.routes;
 import dk.vv.common.data.transfer.objects.Notification.NotificationDTO;
 import dk.vv.mtogo.notification.msvc.Configuration;
 import dk.vv.mtogo.notification.msvc.processors.EnrichWithCustomerProcessor;
+import dk.vv.mtogo.notification.msvc.processors.EnrichWithOrderProcessor;
 import dk.vv.mtogo.notification.msvc.processors.SendMailProcessor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,13 +24,16 @@ public class RouteBuilderImpl extends EndpointRouteBuilder {
 
     private final EnrichWithCustomerProcessor enrichWithCustomerProcessor;
 
+    private final EnrichWithOrderProcessor enrichWithOrderProcessor;
+
     @Inject
-    public RouteBuilderImpl(Logger logger, CamelContext camelContext, Configuration configuration, SendMailProcessor sendMailProcessor, EnrichWithCustomerProcessor enrichWithCustomerProcessor) {
+    public RouteBuilderImpl(Logger logger, CamelContext camelContext, Configuration configuration, SendMailProcessor sendMailProcessor, EnrichWithCustomerProcessor enrichWithCustomerProcessor, EnrichWithOrderProcessor enrichWithOrderProcessor) {
         this.logger = logger;
         this.camelContext = camelContext;
         this.configuration = configuration;
         this.sendMailProcessor = sendMailProcessor;
         this.enrichWithCustomerProcessor = enrichWithCustomerProcessor;
+        this.enrichWithOrderProcessor = enrichWithOrderProcessor;
     }
 
 
@@ -51,6 +55,12 @@ public class RouteBuilderImpl extends EndpointRouteBuilder {
                 .unmarshal().json(NotificationDTO.class)
 
                 .process(e-> logger.infof("recv: Received information about notification for user with id: [%s]", e.getMessage().getBody(NotificationDTO.class).getCustomerId()))
+
+                //Enrich with order information if necessary
+                .choice().when(e-> e.getIn().getBody(NotificationDTO.class).getCustomerId() == 0)
+                    .process(enrichWithOrderProcessor)
+                .end()
+
 
                 //Enrich with customer information
                 .process(enrichWithCustomerProcessor)
