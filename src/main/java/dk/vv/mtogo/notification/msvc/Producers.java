@@ -9,6 +9,7 @@ import io.quarkus.mailer.Mailer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import java.security.KeyManagementException;
@@ -55,7 +56,8 @@ public class Producers {
         return new SendMailProcessor(mailer,logger);
     }
 
-
-
-
+    @Produces
+    EnrichWithOrderProcessor getEnrichWithOrderProcessor(@RestClient OrderService orderService){
+        return new EnrichWithOrderProcessor(logger, orderService);
+    }
 }

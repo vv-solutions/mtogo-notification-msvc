@@ -2,7 +2,9 @@ quarkus:
   smallrye-graphql-client:
     customer-api:
       url: ${MTOGO_CUSTOMER_SERVICE_URL}/graphql
-
+  rest-client:
+    order-api:
+      url: ${MTOGO_ORDER_SERVICE_URL}
 
 
 notification:
