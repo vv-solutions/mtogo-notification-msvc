@@ -2,7 +2,9 @@ package dk.vv.mtogo.notification.msvc;
 
 import com.rabbitmq.client.ConnectionFactory;
 import dk.vv.mtogo.notification.msvc.api.CustomerService;
+import dk.vv.mtogo.notification.msvc.api.OrderService;
 import dk.vv.mtogo.notification.msvc.processors.EnrichWithCustomerProcessor;
+import dk.vv.mtogo.notification.msvc.processors.EnrichWithOrderProcessor;
 import dk.vv.mtogo.notification.msvc.processors.SendMailProcessor;
 import io.quarkus.arc.Unremovable;
 import io.quarkus.mailer.Mailer;
